@@ -193,9 +193,9 @@ private fun loadRouterMap() {
 
 - `settings.gradle`：`includeBuild('ServiceRouterPlugin')`
 - `app/build.gradle`：`id 'com.haha.servicerouter.register'`
-- 插件类：`RouterRegisterPlugin`
+- 插件类：`AutoRegisterPlugin`
 
-它对每个 variant 注册 `dofRouterRegisterXxx`，用 **AGP 8 `ScopedArtifact.CLASSES` +
+它对每个 variant 注册 `dofAutoRegisterXxx`，用 **AGP 8 `ScopedArtifact.CLASSES` +
 `Scope.ALL`** 做 transform：输入是全部 jar + 目录 class，输出一个合并 jar。这覆盖 app 自己的
 class 和依赖里的 `Router.class`。
 

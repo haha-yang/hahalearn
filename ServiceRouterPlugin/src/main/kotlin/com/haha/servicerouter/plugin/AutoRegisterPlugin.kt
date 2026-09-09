@@ -7,34 +7,35 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 
 /**
- * 对齐 ARouter arouter-register：
- * 打包期扫描 RouteLoader / InterceptorLoader / IServiceInit，
+ * 打包期自动注册插件（对齐 ARouter arouter-register）：
+ * 扫描 RouteLoader / InterceptorLoader / IServiceInit，
  * ASM 注入 Router.loadRouterMap 与 ServiceLoaderInit.loadServiceMap。
  */
-class RouterRegisterPlugin : Plugin<Project> {
+class AutoRegisterPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         val androidComponents =
             project.extensions.findByType(AndroidComponentsExtension::class.java)
         if (androidComponents == null) {
-            project.logger.warn("[DOFRouter] skip register plugin: AndroidComponentsExtension not found")
+            project.logger.warn("[AutoRegister] skip plugin: AndroidComponentsExtension not found")
             return
         }
         androidComponents.onVariants { variant ->
-            val taskName = "dofRouterRegister${variant.name.replaceFirstChar { it.uppercase() }}"
+            val taskName = "dofAutoRegister${variant.name.replaceFirstChar { it.uppercase() }}"
             val taskProvider =
-                project.tasks.register(taskName, RouterRegisterTask::class.java) { task ->
-                    task.group = "dofrouter"
-                    task.description = "Inject DOFRouter auto-register for ${variant.name}"
+                project.tasks.register(taskName, AutoRegisterTask::class.java) { task ->
+                    task.group = "dof"
+                    task.description =
+                        "Inject Router / ServiceLoader auto-register for ${variant.name}"
                 }
             variant.artifacts
                 .forScope(ScopedArtifacts.Scope.ALL)
                 .use(taskProvider)
                 .toTransform(
                     ScopedArtifact.CLASSES,
-                    RouterRegisterTask::allJars,
-                    RouterRegisterTask::allDirectories,
-                    RouterRegisterTask::output
+                    AutoRegisterTask::allJars,
+                    AutoRegisterTask::allDirectories,
+                    AutoRegisterTask::output
                 )
         }
     }

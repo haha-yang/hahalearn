@@ -4,7 +4,7 @@ flowchart TB
         B --> C["生成 ServiceInit_ServiceImpl"]
     end
     subgraph package ["2. 打包期 Transform"]
-        D["RouterRegisterTask 扫描 CLASSES"] --> E["收集全部 IServiceInit"]
+        D["AutoRegisterTask 扫描 CLASSES"] --> E["收集全部 IServiceInit"]
         E --> F["检查跨模块 key / default 冲突"]
         F --> G["ASM 注入 ServiceLoaderInit"]
     end

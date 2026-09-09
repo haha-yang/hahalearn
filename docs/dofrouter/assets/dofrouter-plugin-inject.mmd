@@ -1,5 +1,5 @@
 flowchart TB
-    A["AGP 合并全部 CLASSES"] --> B["dofRouterRegisterDebug"]
+    A["AGP 合并全部 CLASSES"] --> B["dofAutoRegisterDebug"]
     B --> C["扫 com/haha/servicerouter/routes/*.class"]
     C --> D{"实现 IRouteLoader?"}
     D -->|是| E["记下 RouteLoader_app"]

@@ -30,9 +30,9 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        dofRouterRegister {
+        dofAutoRegister {
             id = 'com.haha.servicerouter.register'
-            implementationClass = 'com.haha.servicerouter.plugin.RouterRegisterPlugin'
+            implementationClass = 'com.haha.servicerouter.plugin.AutoRegisterPlugin'
         }
     }
 }

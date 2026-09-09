@@ -2,7 +2,7 @@
 
 记录时间：2026-09-06  
 对照代码：`Router`、`RouteTable`、`ActivityHandler`、`RouteProcessor`、`InterceptorProcessor`、
-`RouterRegisterTask`  
+`AutoRegisterTask`  
 优化前链路见同目录 [dofrouter-DOFRouter底层实现.md](dofrouter-DOFRouter底层实现.md)。  
 示例仍用 `GpsActivity`：`@Route(path = RoutePath.GPS)` →
 `DOFRouter.create(RoutePath.GPS).navigate(this)`。
@@ -149,7 +149,7 @@ interface IInterceptorLoader {
 
 ## 6. 底层注册：插件单次遍历与跨模块冲突
 
-`RouterRegisterTask` 仍对 `ScopedArtifact.CLASSES` + `Scope.ALL` 做 transform，输出一个合并
+`AutoRegisterTask` 仍对 `ScopedArtifact.CLASSES` + `Scope.ALL` 做 transform，输出一个合并
 jar。优化前是两遍：
 
 1. `collectFromInputs`：打开全部 jar，只认 Loader

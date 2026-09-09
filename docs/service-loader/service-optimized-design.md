@@ -2,7 +2,8 @@
 
 记录时间：2026-09-06  
 包目录：`docs/service-loader/`  
-本包两篇：本文（当前实现）+ [优化前笔记](service-legacy-notes.md)（原三问合并）。
+本包三篇：本文（当前实现）+ [优化前笔记](service-legacy-notes.md) + [面试讲稿](service-loader-interview.md)
+（APT → Gradle → 灌表，标反射/单例）。
 
 入口：`ServiceLoaderHelper.getService(IUserService::class.java)`  
 示例：`UserService` 上 `@IServiceLoader(interfaces = [IUserService::class], defaultImpl = true)`
@@ -57,7 +58,7 @@ demo，但撑不住多 impl 模块，也会把「一个实现登记两条 key」
 | 阶段                 | 谁干活                                     | 产物                                                        |
 |--------------------|-----------------------------------------|-----------------------------------------------------------|
 | 编译期（kapt）          | `ServiceAnnotationProcessor`            | 每个模块一份 `ServiceInit_模块名`                                  |
-| 打包期（AGP Transform） | `RouterRegisterTask`                    | 往 `ServiceLoaderInit.loadServiceMap()` 插入 `register(...)` |
+| 打包期（AGP Transform） | `AutoRegisterTask`                      | 往 `ServiceLoaderInit.loadServiceMap()` 插入 `register(...)` |
 | 运行期                | `ServiceLoader` + `ServiceLoaderHelper` | 查 `SERVICES` 表，按默认实现 / key 创建实例                           |
 
 ![模块分层](assets/service-opt-modules.png)
@@ -144,8 +145,8 @@ public final class ServiceInit_ServiceImpl implements IServiceInit {
 
 ## 5. 打包期：插件聚合 + 全局冲突检查
 
-`app` 应用了 `com.haha.servicerouter.register`。`RouterRegisterPlugin` 对每个 variant 注册
-`RouterRegisterTask`，对全部 CLASSES（含依赖 jar / 本模块 class）做 Transform。
+`app` 应用了 `com.haha.servicerouter.register`。`AutoRegisterPlugin` 对每个 variant 注册
+`AutoRegisterTask`，对全部 CLASSES（含依赖 jar / 本模块 class）做 Transform。
 
 ![插件聚合与冲突检查](assets/service-opt-plugin.png)
 
@@ -328,7 +329,8 @@ Debug 下找不到实现应尽早失败，避免组件化里「以为注册了�
 
 ## 10. 和本包其它文档的关系
 
-| 文档                               | 现在怎么读                                  |
-|----------------------------------|----------------------------------------|
-| 本文                               | **当前实现**的总结 + 优化前后对比                   |
-| [优化前笔记](service-legacy-notes.md) | 原三问合并：优化前 `getService`、JDK SPI 对照、改动条目 |
+| 文档                                  | 现在怎么读                                                           |
+|-------------------------------------|-----------------------------------------------------------------|
+| 本文                                  | **当前实现**的总结 + 优化前后对比                                            |
+| [面试讲稿](service-loader-interview.md) | 从 APT 到 `IUserService` 绑定 `UserService` 的口述稿，标出反射 / Gradle / 单例 |
+| [优化前笔记](service-legacy-notes.md)    | 原三问合并：优化前 `getService`、JDK SPI 对照、改动条目                          |
