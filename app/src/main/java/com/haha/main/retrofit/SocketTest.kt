@@ -1,6 +1,7 @@
 package com.haha.main.retrofit
 
 import android.os.Build
+import com.google.gson.Gson
 import com.haha.log.DOFLogUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -48,7 +49,14 @@ class SocketTest {
         scope.launch {
             try {
                 val body = httpsRequest(method = "GET", url = url, body = null)
-                DOFLogUtil.d(TAG, "httpsGet result: $body")
+                val repo = Gson().fromJson(body, GithubRepoBean::class.java)
+                DOFLogUtil.d(
+                    TAG,
+                    "httpsGet repo id=${repo.id} fullName=${repo.fullName} " +
+                            "owner=${repo.owner?.login} language=${repo.language} " +
+                            "stars=${repo.stargazersCount} defaultBranch=${repo.defaultBranch} " +
+                            "bean=$repo",
+                )
             } catch (e: Exception) {
                 DOFLogUtil.e(TAG, "httpsGet onFailure: ${e.message}", e)
             }
@@ -132,6 +140,7 @@ class SocketTest {
         val host = requireNotNull(uri.host) { "url 无 host: $url" }
         val port = if (uri.port == -1) 443 else uri.port
         val path = buildPath(uri)
+        DOFLogUtil.d(TAG, "uri = $uri, host = $host, port = $port, path = $path")
 
         // ① DNS：Socket 只能连 IP。系统解析多数走 UDP 53。
         val addresses = InetAddress.getAllByName(host)
@@ -217,6 +226,13 @@ class SocketTest {
         val code = statusLine.split(' ').getOrNull(1)?.toIntOrNull() ?: -1
         val headers = parseHeaders(headerText)
         val encoding = headers["transfer-encoding"].orEmpty()
+        DOFLogUtil.d(
+            TAG, "headerText = $headerText\n " +
+                    "statusLine = $statusLine\n " +
+                    "code = $code\n " +
+                    "headers = $headers\n " +
+                    "encoding = $encoding"
+        )
         val bodyBytes = when {
             encoding.contains("chunked", ignoreCase = true) -> readChunked(input)
             headers["content-length"] != null -> {
@@ -233,23 +249,27 @@ class SocketTest {
     private fun readHeaderBlock(input: InputStream): String {
         val out = ByteArrayOutputStream()
         var matched = 0
-        val crlfcrlf = byteArrayOf(0x0d, 0x0a, 0x0d, 0x0a)
+        // 这是在字节里写 HTTP 头结束标记：连续两个 CRLF，也就是 \r\n\r\n。
+        val crlfCrlf = byteArrayOf(0x0d, 0x0a, 0x0d, 0x0a)
         while (matched < 4) {
             val b = input.read()
             if (b < 0) break
             out.write(b)
-            matched = if (b == crlfcrlf[matched].toInt()) matched + 1 else 0
+            matched = if (b == crlfCrlf[matched].toInt()) matched + 1 else 0
         }
         return out.toString(StandardCharsets.ISO_8859_1.name())
     }
 
     private fun parseHeaders(headerBlock: String): Map<String, String> {
         val map = linkedMapOf<String, String>()
+        // drop(n): 丢掉前 n 个元素，后面的留下
+        // return@forEach: 相当于continue
         headerBlock.split("\r\n").drop(1).forEach { line ->
             if (line.isEmpty()) return@forEach
             val idx = line.indexOf(':')
             if (idx <= 0) return@forEach
-            map[line.substring(0, idx).trim().lowercase()] = line.substring(idx + 1).trim()
+            // take() 类似 substring(0, idx)
+            map[line.take(idx).trim().lowercase()] = line.substring(idx + 1).trim()
         }
         return map
     }

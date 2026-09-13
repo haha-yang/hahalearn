@@ -56,6 +56,6 @@ class AndroidLogAdapter : DefaultLogAdapter() {
     }
 
     companion object {
-        private const val MAX_LOG_LENGTH = 3500
+        private const val MAX_LOG_LENGTH = 1000
     }
 }
