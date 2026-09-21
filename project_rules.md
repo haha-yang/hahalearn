@@ -24,6 +24,8 @@
   设计模式与打印流程
 - [`docs/https-http-versions.md`](docs/https-http-versions.md) — HTTPS 上 HTTP/1.1、HTTP/2、HTTP/3
   协议对比与 Demo（`SocketTest` / `HttpsVersionTest`）
+- [`docs/speech-asr/speech-asr-offline-caption.md`](docs/speech-asr/speech-asr-offline-caption.md) —
+  离线中文识别与实时字幕（`:speech-asr`）
 - [`docs/mqtt/mqtt-sender-receiver.md`](docs/mqtt/mqtt-sender-receiver.md) — MQTT Fixed Header
   与发送方 /
   接收方 Demo（入口 `MqttTest`，实现在 `retrofit.mqtt` 包，附图
@@ -62,6 +64,7 @@
 | `:app`                        | 宿主壳：业务 Demo，只编译依赖 api / runtime，不依赖 ServiceImpl 源码 |
 | `:lib-common`                 | BaseActivity / BaseMvvm* / 主题 / TimeMonitor        |
 | `:BluetoothSdk`               | BLE 扫描 / 连接 / GATT / RFCOMM / A2DP                 |
+| `:speech-asr`                 | 离线中文 ASR 流水线：PCM / WAV / MediaCodec / VAD / 实时字幕   |
 | `:ServiceApi`                 | SPI 接口（如 `IUserService`）                           |
 | `:ServiceRuntime`             | ServiceLoader / ServiceLoaderHelper 运行时            |
 | `:ServiceImpl`                | SPI 实现，宿主 `runtimeOnly` 仅打包                        |
@@ -163,6 +166,7 @@ AppCompatActivity
 | `wifi` / `network`                                             | Wi-Fi、网络监听与加密                                        |
 | `flutter`                                                      | `FlutterIntegrationActivity` + MethodChannel         |
 | `volume`                                                       | 音量 / 歌词 / 媒体                                         |
+| `speech.ui`                                                    | 离线中文识别 / 实时字幕 Demo（核心在 `:speech-asr`）                |
 | `waterfall`                                                    | 瀑布流自定义布局                                             |
 | `animation` / `scene` / `transparency`                         | 动画、Scene、透明 Activity                                 |
 | `liveData` / `coroutineScope` / `room`                         | 组件与协程、Room 示例                                        |

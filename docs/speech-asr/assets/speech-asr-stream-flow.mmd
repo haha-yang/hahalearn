@@ -1,0 +1,23 @@
+sequenceDiagram
+    participant Mic as AudioRecord
+    participant Sess as CaptionSession
+    participant Vad as EnergyVad
+    participant Asr as StreamingAsrEngine
+    participant Cap as CaptionAggregator
+    participant Ui as SpeechCaptionActivity
+
+    Mic->>Sess: 100ms PCM bytes
+    Sess->>Sess: bytesToFloatMono
+    Sess->>Vad: rms
+    Sess->>Ui: onLevel rms speaking
+    Sess->>Asr: acceptWaveform float
+    Asr->>Asr: decode while ready
+    alt 文本变化
+        Asr->>Cap: Partial
+        Cap->>Ui: 覆盖当前一句
+    end
+    alt endpoint 或文件结束
+        Asr->>Cap: Final
+        Cap->>Ui: 追加已确认句子
+        Asr->>Asr: reset stream
+    end

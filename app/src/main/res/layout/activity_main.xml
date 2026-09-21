@@ -194,12 +194,20 @@
                     app:layout_constraintTop_toBottomOf="@+id/btn_activity_selector" />
 
                 <Button
+                    android:id="@+id/btn_activity_speech_caption"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:importantForAccessibility="no"
+                    android:text="离线语音识别 / 实时字幕"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_activity_volume" />
+
+                <Button
                     android:id="@+id/btn_activity_slide"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:importantForAccessibility="no"
                     android:text="左滑删除测试"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_activity_volume" />
+                    app:layout_constraintTop_toBottomOf="@+id/btn_activity_speech_caption" />
 
                 <Button
                     android:id="@+id/btn_activity_bluetooth"

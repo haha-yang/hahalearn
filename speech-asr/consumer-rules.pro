@@ -1,0 +1,2 @@
+-keep class com.k2fsa.sherpa.onnx.** { *; }
+-keep class com.haha.speech.** { *; }

@@ -1,0 +1,11 @@
+flowchart LR
+    A[音频文件 Uri] --> B{是否 PCM WAV}
+    B -->|是| C[WavPcmReader 解析 RIFF 头]
+    B -->|否| D[MediaExtractor 选音轨]
+    D --> E[MediaCodec 解码出 PCM]
+    C --> F[PcmUtils 转 float 单声道]
+    E --> F
+    F --> G[LinearResampler 到 16kHz]
+    G --> H[按 100ms 切片送 ASR]
+    H --> I[inputFinished 刷尾包]
+    I --> J[Partial / Final 字幕]

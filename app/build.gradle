@@ -21,6 +21,8 @@ android {
 
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
+        pickFirst 'lib/arm64-v8a/libc++_shared.so'
+        pickFirst 'lib/arm64-v8a/libonnxruntime.so'
     }
 
     defaultConfig {
@@ -222,6 +224,7 @@ dependencies {
     implementation project(':lib-common')
     implementation project(':shared')
     implementation project(':BluetoothSdk')
+    implementation project(':speech-asr')
     implementation project(':ServiceApi')
     implementation project(':ServiceRuntime')
     runtimeOnly project(':ServiceImpl')

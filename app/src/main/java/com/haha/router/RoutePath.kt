@@ -5,4 +5,5 @@ package com.haha.router
  */
 object RoutePath {
     const val GPS = "/gps/main"
+    const val SPEECH_CAPTION = "/speech/caption"
 }

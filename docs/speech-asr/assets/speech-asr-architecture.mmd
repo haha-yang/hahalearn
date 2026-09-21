@@ -1,0 +1,41 @@
+flowchart TB
+    subgraph appUi [app com.haha.speech.ui]
+        A[SpeechCaptionActivity]
+        B[SpeechCaptionViewModel]
+    end
+
+    subgraph sessionLayer [speech-asr CaptionSession]
+        C[CaptionSession]
+        D[CaptionAggregator]
+    end
+
+    subgraph sources [PCM 来源]
+        E[MicPcmSource AudioRecord]
+        F[AudioFileDecoder MediaCodec]
+        G[WavPcmReader]
+    end
+
+    subgraph engines [StreamingAsrEngine]
+        H[ProbeAsrEngine VAD]
+        I[SherpaStreamingAsrEngine]
+    end
+
+    subgraph model [ModelStore]
+        J[filesDir 模型]
+        K[assets 拷贝]
+        L[GitHub 下载 tar.bz2]
+    end
+
+    A -->|Intent| B
+    B --> C
+    C --> E
+    C --> F
+    F --> G
+    C --> D
+    C --> H
+    C --> I
+    I --> J
+    L --> J
+    K --> J
+    D -->|Partial / Final| B
+    B -->|UiState| A
