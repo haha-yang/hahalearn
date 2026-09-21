@@ -331,6 +331,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         mViewDataBinding.btnActivitySelector.setOnClickListener(this)
         mViewDataBinding.btnActivityVolume.setOnClickListener(this)
         mViewDataBinding.btnActivitySpeechCaption.setOnClickListener(this)
+        mViewDataBinding.btnActivityLlmChat.setOnClickListener(this)
         mViewDataBinding.btnActivitySlide.setOnClickListener {
             val intent = Intent(mContext, EasySwipeMenuActivity::class.java)
             startActivity(intent)
@@ -1158,6 +1159,10 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
                 R.id.btn_activity_speech_caption -> {
                     DOFRouter.create(RoutePath.SPEECH_CAPTION).navigate(this)
+                }
+
+                R.id.btn_activity_llm_chat -> {
+                    DOFRouter.create(RoutePath.LLM_CHAT).navigate(this)
                 }
 
                 R.id.btn_activity_plugin -> {

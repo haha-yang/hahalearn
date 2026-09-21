@@ -1,0 +1,13 @@
+flowchart TB
+    A[LlmChatActivity] -->|sendIntent| B[LlmChatViewModel]
+    B --> P[SharedPreferences]
+    B --> C[ChatSession]
+    C --> D[messages 历史]
+    C --> E[assistantBuffer]
+    C --> F[MockLlmEngine]
+    C --> G[OpenAiCompatibleEngine]
+    F --> H[ChatCompletionsCodec]
+    G --> H
+    G --> I[SseParser]
+    C -->|Listener 事件| B
+    B -->|UiState Effect| A

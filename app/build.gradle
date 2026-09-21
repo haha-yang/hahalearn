@@ -224,6 +224,7 @@ dependencies {
     implementation project(':lib-common')
     implementation project(':shared')
     implementation project(':BluetoothSdk')
+    implementation project(':LlmSdk')
     implementation project(':speech-asr')
     implementation project(':ServiceApi')
     implementation project(':ServiceRuntime')

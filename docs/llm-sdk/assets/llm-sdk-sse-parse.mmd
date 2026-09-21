@@ -1,0 +1,10 @@
+flowchart TB
+    A[POST chat/completions] --> B{stream?}
+    B -->|否| C[一次读 JSON body]
+    C --> D[message.content 后 Done]
+    B -->|是| E[OkHttp 逐行读]
+    E --> F{data 字段}
+    F -->|DONE| G[Done 输出已拼接全文]
+    F -->|JSON chunk| H[decodeDeltaContent]
+    H --> I[拼接并发 Token]
+    I --> E

@@ -1,0 +1,27 @@
+sequenceDiagram
+    participant Ui as LlmChatActivity
+    participant Vm as LlmChatViewModel
+    participant Sess as ChatSession
+    participant Eng as LlmEngine
+    participant Src as Mock或HTTP
+
+    Ui->>Vm: SendMessage
+    Vm->>Sess: applyConfig 后 send
+    Sess->>Sess: 写入 system 与 user
+    Sess->>Eng: chat ChatRequest
+    Eng->>Sess: RequestReady JSON
+    Sess->>Vm: onRequest
+    Vm->>Ui: 展示请求体
+    Eng->>Src: 开始生成
+    loop stream 或逐 token
+        Src->>Eng: delta.content
+        Eng->>Sess: SseLine 与 Token
+        Sess->>Sess: assistantBuffer 拼接
+        Sess->>Vm: onTranscript partial
+        Vm->>Ui: 当前 assistant 跳动
+    end
+    Src->>Eng: 结束或 DONE
+    Eng->>Sess: Done
+    Sess->>Sess: history 追加 assistant
+    Sess->>Vm: onTranscript final
+    Vm->>Ui: messages 历史定稿

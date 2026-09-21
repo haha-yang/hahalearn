@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="LLM 学习 Demo"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_engine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="@color/gray_606060"
+                android:textSize="14sp"
+                tools:text="引擎：Mock（本地协议演示）" />
+
+            <TextView
+                android:id="@+id/tv_usage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="@color/gray_606060"
+                android:textSize="13sp"
+                tools:text="usage：—" />
+
+            <RadioGroup
+                android:id="@+id/rg_provider"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_mock"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="Mock 本地" />
+
+                <RadioButton
+                    android:id="@+id/rb_http"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:text="OpenAI Compatible" />
+            </RadioGroup>
+
+            <CheckBox
+                android:id="@+id/cb_stream"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="stream=true（SSE 逐 token）" />
+
+            <LinearLayout
+                android:id="@+id/group_http"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <EditText
+                    android:id="@+id/et_base_url"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="baseUrl，例如 https://api.openai.com/v1"
+                    android:importantForAutofill="no"
+                    android:inputType="textUri"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/et_model"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="model，例如 gpt-4o-mini / deepseek-chat"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:textSize="14sp" />
+
+                <EditText
+                    android:id="@+id/et_api_key"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="apiKey（只放 Header，不进 JSON）"
+                    android:importantForAutofill="no"
+                    android:inputType="textPassword"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="messages 历史"
+                android:textColor="@color/gray_606060"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_transcript"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@color/circle_gradual_end"
+                android:minHeight="120dp"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:textIsSelectable="true"
+                android:textSize="14sp"
+                tools:text="[user]\n你好" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="当前 assistant（Token 拼接中）"
+                android:textColor="@color/gray_606060"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_partial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@color/b3ffffff"
+                android:minHeight="56dp"
+                android:padding="12dp"
+                android:textColor="@color/purple_700"
+                android:textSize="16sp"
+                tools:text="正在生成…" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="请求 JSON / Header"
+                android:textColor="@color/gray_606060"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_request"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@color/circle_gradual_end"
+                android:fontFamily="monospace"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:textIsSelectable="true"
+                android:textSize="12sp"
+                tools:text="{ &quot;messages&quot;: [] }" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="最近一条 SSE data"
+                android:textColor="@color/gray_606060"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/tv_sse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@color/circle_gradual_end"
+                android:fontFamily="monospace"
+                android:padding="12dp"
+                android:textColor="@color/black"
+                android:textIsSelectable="true"
+                android:textSize="12sp"
+                tools:text="{&quot;choices&quot;:[{&quot;delta&quot;:{&quot;content&quot;:&quot;你&quot;}}]}" />
+
+            <EditText
+                android:id="@+id/et_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="top"
+                android:hint="输入 user 消息，可先问：什么是 SSE / token / messages"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine"
+                android:minHeight="72dp"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_send"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="发送" />
+
+                <Button
+                    android:id="@+id/btn_stop"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    android:text="停止" />
+
+                <Button
+                    android:id="@+id/btn_clear"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:text="清空" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:paddingBottom="24dp"
+                android:text="学习路径：messages 角色 → POST /v1/chat/completions → SSE delta.content 拼接成 assistant。Mock 不发网也能看协议；HTTP 可填 OpenAI / DeepSeek / 本机 Ollama（模拟器 10.0.2.2:11434/v1）。核心在独立模块 :LlmSdk。"
+                android:textColor="@color/gray_A0A0A0"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

@@ -202,12 +202,20 @@
                     app:layout_constraintTop_toBottomOf="@+id/btn_activity_volume" />
 
                 <Button
+                    android:id="@+id/btn_activity_llm_chat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:importantForAccessibility="no"
+                    android:text="LLM 学习 Demo"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_activity_speech_caption" />
+
+                <Button
                     android:id="@+id/btn_activity_slide"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:importantForAccessibility="no"
                     android:text="左滑删除测试"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_activity_speech_caption" />
+                    app:layout_constraintTop_toBottomOf="@+id/btn_activity_llm_chat" />
 
                 <Button
                     android:id="@+id/btn_activity_bluetooth"
