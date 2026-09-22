@@ -2,7 +2,7 @@ package com.haha.bluetooth.adapter
 
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.haha.base.BaseFragment
+import com.haha.baseui.BaseFragment
 
 
 /**

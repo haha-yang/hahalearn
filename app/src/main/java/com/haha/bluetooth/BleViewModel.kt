@@ -4,7 +4,7 @@ import android.Manifest
 import android.app.Application
 import android.bluetooth.BluetoothSocket
 import android.util.Log
-import com.haha.base.BaseViewModel
+import com.haha.baseui.mvvm.BaseViewModel
 import com.haha.blesdk.bean.BleScanResult
 import com.haha.blesdk.exceptions.BleErrorException
 import com.haha.blesdk.interfaces.BaseBleListener

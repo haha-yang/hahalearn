@@ -1,4 +1,4 @@
-package com.haha.mviFrame.base
+package com.haha.baseui.mvi
 
 /**
  * 用户意图。由 View 发出，ViewModel 串行消费。

@@ -1,4 +1,4 @@
-package com.haha.base
+package com.haha.baseui.mvvm
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.haha.common.R
+import com.haha.baseui.BaseFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -58,7 +58,8 @@ abstract class BaseMvvmFragment<V : ViewDataBinding, VM : BaseViewModel> : BaseF
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         mViewDataBinding = DataBindingUtil.inflate(inflater, getLayoutId(), container, false)
-        mViewDataBinding.root.background = ContextCompat.getDrawable(mContext, R.color.white)
+        mViewDataBinding.root.background =
+            ContextCompat.getDrawable(mContext, android.R.color.white)
         mRootView = mViewDataBinding.root
         return mViewDataBinding.root
     }

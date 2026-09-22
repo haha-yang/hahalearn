@@ -1,7 +1,7 @@
 package com.haha.mviFrame.main
 
-import com.haha.mviFrame.base.IMviUiEffect
-import com.haha.mviFrame.base.IMviUiState
+import com.haha.baseui.mvi.IMviUiEffect
+import com.haha.baseui.mvi.IMviUiState
 
 data class MainUiState(
     val isLoading: Boolean = false,

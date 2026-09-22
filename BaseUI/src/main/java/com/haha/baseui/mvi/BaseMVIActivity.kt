@@ -1,10 +1,10 @@
-package com.haha.mviFrame.base
+package com.haha.baseui.mvi
 
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.haha.base.BaseMvvmActivity
+import com.haha.baseui.mvvm.BaseMvvmActivity
 import kotlinx.coroutines.launch
 
 /**

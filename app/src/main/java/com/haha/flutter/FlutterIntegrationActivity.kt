@@ -6,8 +6,8 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.lifecycleScope
-import com.haha.base.BaseMvvmActivity
-import com.haha.base.BaseViewModel
+import com.haha.baseui.mvvm.BaseMvvmActivity
+import com.haha.baseui.mvvm.BaseViewModel
 import com.haha.hahalearn.R
 import com.haha.hahalearn.databinding.ActivityFlutterIntegrationBinding
 import io.flutter.embedding.android.FlutterFragment

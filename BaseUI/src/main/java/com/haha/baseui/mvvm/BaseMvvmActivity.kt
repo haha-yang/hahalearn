@@ -1,4 +1,4 @@
-package com.haha.base
+package com.haha.baseui.mvvm
 
 import android.os.Bundle
 import android.util.Log
@@ -10,7 +10,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.haha.common.R
+import com.haha.baseui.BaseActivity
 import com.haha.main.timeMonitor.TimeMonitorConfig
 import com.haha.main.timeMonitor.TimeMonitorManager
 import kotlinx.coroutines.Dispatchers
@@ -88,7 +88,7 @@ abstract class BaseMvvmActivity<V : ViewDataBinding, VM : BaseViewModel> : BaseA
 
     }
 
-    protected open fun defaultBackgroundId(): Int = R.color.white
+    protected open fun defaultBackgroundId(): Int = android.R.color.white
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

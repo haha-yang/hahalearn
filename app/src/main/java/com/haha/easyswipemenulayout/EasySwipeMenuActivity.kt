@@ -1,12 +1,11 @@
 package com.haha.easyswipemenulayout
 
 import android.content.Context
-import android.os.Build
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 import android.view.WindowManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.haha.base.BaseMvvmActivity
-import com.haha.base.BaseViewModel
+import com.haha.baseui.mvvm.BaseMvvmActivity
+import com.haha.baseui.mvvm.BaseViewModel
 import com.haha.hahalearn.R
 import com.haha.hahalearn.databinding.ActivityEasySwipeMenuBinding
 import com.haha.log.DOFLogUtil

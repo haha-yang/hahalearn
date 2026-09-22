@@ -1,9 +1,9 @@
 package com.haha.llm.ui
 
+import com.haha.baseui.mvi.IMviIntent
+import com.haha.baseui.mvi.IMviUiEffect
+import com.haha.baseui.mvi.IMviUiState
 import com.haha.llmsdk.config.LlmProvider
-import com.haha.mviFrame.base.IMviIntent
-import com.haha.mviFrame.base.IMviUiEffect
-import com.haha.mviFrame.base.IMviUiState
 
 data class LlmUiConfig(
     val mock: Boolean = true,

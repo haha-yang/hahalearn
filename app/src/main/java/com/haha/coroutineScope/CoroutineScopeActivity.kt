@@ -4,7 +4,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.lifecycle.lifecycleScope
-import com.haha.base.BaseMvvmActivity
+import com.haha.baseui.mvvm.BaseMvvmActivity
 import com.haha.hahalearn.R
 import com.haha.hahalearn.databinding.ActivityCoroutineScopeBinding
 import kotlinx.coroutines.asCoroutineDispatcher

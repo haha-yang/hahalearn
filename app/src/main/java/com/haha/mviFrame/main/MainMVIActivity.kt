@@ -4,9 +4,9 @@ import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.haha.baseui.mvi.BaseMVIActivity
 import com.haha.hahalearn.R
 import com.haha.hahalearn.databinding.ActivityMviBinding
-import com.haha.mviFrame.base.BaseMVIActivity
 
 class MainMVIActivity : BaseMVIActivity<
         ActivityMviBinding,

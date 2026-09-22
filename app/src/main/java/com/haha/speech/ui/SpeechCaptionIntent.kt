@@ -1,6 +1,6 @@
 package com.haha.speech.ui
 
-import com.haha.mviFrame.base.IMviIntent
+import com.haha.baseui.mvi.IMviIntent
 
 sealed interface SpeechCaptionIntent : IMviIntent {
     data object PrepareModel : SpeechCaptionIntent

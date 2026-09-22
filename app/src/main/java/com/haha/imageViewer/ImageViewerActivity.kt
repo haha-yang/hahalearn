@@ -3,8 +3,8 @@ package com.haha.imageViewer
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
-import com.haha.base.BaseMvvmActivity
-import com.haha.base.BaseViewModel
+import com.haha.baseui.mvvm.BaseMvvmActivity
+import com.haha.baseui.mvvm.BaseViewModel
 import com.haha.hahalearn.R
 import com.haha.hahalearn.databinding.ActivityImageviewerBinding
 

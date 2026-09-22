@@ -1,6 +1,6 @@
 package com.haha.mviFrame.data
 
-import com.haha.mviFrame.base.IMviIntent
+import com.haha.baseui.mvi.IMviIntent
 
 sealed interface DataIntent : IMviIntent {
     data class RequestData(val id: String) : DataIntent

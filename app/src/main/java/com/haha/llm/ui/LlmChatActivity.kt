@@ -2,9 +2,9 @@ package com.haha.llm.ui
 
 import android.view.View
 import android.widget.Toast
+import com.haha.baseui.mvi.BaseMVIActivity
 import com.haha.hahalearn.R
 import com.haha.hahalearn.databinding.ActivityLlmChatBinding
-import com.haha.mviFrame.base.BaseMVIActivity
 import com.haha.router.RoutePath
 import com.haha.servicerouterannotation.annotation.Route
 

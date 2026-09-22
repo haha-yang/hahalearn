@@ -10,8 +10,8 @@ import android.util.Log
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.haha.base.BaseMvvmActivity
-import com.haha.base.BaseViewModel
+import com.haha.baseui.mvvm.BaseMvvmActivity
+import com.haha.baseui.mvvm.BaseViewModel
 import com.haha.bluetooth.adapter.ViewPagerFragmentStateAdapter
 import com.haha.bluetooth.fragment.BleBondedFragment
 import com.haha.bluetooth.fragment.BleClientFragment

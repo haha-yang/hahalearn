@@ -1,4 +1,4 @@
-package com.haha.base
+package com.haha.baseui
 
 import android.app.Activity
 import android.app.Application

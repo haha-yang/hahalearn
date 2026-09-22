@@ -15,8 +15,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.haha.base.BaseMvvmFragment
-import com.haha.base.BaseViewModel
+import com.haha.baseui.mvvm.BaseMvvmFragment
+import com.haha.baseui.mvvm.BaseViewModel
 import com.haha.blesdk.bean.BleScanResult
 import com.haha.blesdk.communication.BleClientManager
 import com.haha.blesdk.constants.BleConstants

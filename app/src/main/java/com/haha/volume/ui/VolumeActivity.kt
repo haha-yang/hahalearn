@@ -20,17 +20,16 @@ import android.widget.Toast
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.haha.base.BaseMvvmActivity
+import com.haha.baseui.mvvm.BaseMvvmActivity
 import com.haha.hahalearn.R
 import com.haha.hahalearn.databinding.ActivityVolumeBinding
-import com.haha.util.DpOrSpToPxTransfer
 import com.haha.receiver.VolumeBroadReceiver
-import com.haha.volume.model.VolumeViewModel
+import com.haha.util.DpOrSpToPxTransfer
 import com.haha.volume.lrc.LrcRow
 import com.haha.volume.media.MediaStatus
+import com.haha.volume.model.VolumeViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.*
 
 
 /**

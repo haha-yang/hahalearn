@@ -23,8 +23,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.haha.base.BaseMvvmActivity
-import com.haha.base.BaseViewModel
+import com.haha.baseui.mvvm.BaseMvvmActivity
+import com.haha.baseui.mvvm.BaseViewModel
 import com.haha.hahalearn.R
 import com.haha.hahalearn.databinding.ActivityWifiBinding
 import com.haha.log.DOFLogUtil

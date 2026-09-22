@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.haha.base.BaseViewModel
+import com.haha.baseui.mvvm.BaseViewModel
 import com.haha.hahalearn.R
 import com.haha.kmp.SharedStudy
 

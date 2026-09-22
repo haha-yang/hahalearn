@@ -13,8 +13,8 @@ import android.bluetooth.BluetoothProfile
 import android.os.Build
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.haha.base.BaseMvvmFragment
-import com.haha.base.BaseViewModel
+import com.haha.baseui.mvvm.BaseMvvmFragment
+import com.haha.baseui.mvvm.BaseViewModel
 import com.haha.blesdk.communication.BleServerImpl
 import com.haha.blesdk.constants.BleConstants
 import com.haha.blesdk.manager.BleScanManager

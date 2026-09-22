@@ -1,35 +1,33 @@
-package com.haha.base
+package com.haha.baseui
 
-import android.app.ActionBar
+import android.R
 import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.view.WindowInsetsController
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.WindowInsetsCompat
-import com.haha.common.R
+import androidx.fragment.app.Fragment
 import com.haha.log.DOFLogUtil
-import com.haha.main.timeMonitor.TimeMonitorConfig
-import com.haha.main.timeMonitor.TimeMonitorManager
 
 
 /**
  *     author : yangzy33
- *     time   : 2024-05-11
+ *     time   : 2024-08-12
  *     desc   :
  *     version: 1.0
  */
-abstract class BaseActivity : AppCompatActivity() {
+abstract class BaseFragment : Fragment() {
     protected open val TAG = javaClass.simpleName
-
+    protected lateinit var mRootView: View
     protected lateinit var mContext: Context
 
     protected var mUseThemeStatusBarColor = false
@@ -37,18 +35,6 @@ abstract class BaseActivity : AppCompatActivity() {
     protected var mUseStatusBarColor = true
 
     protected abstract fun getLayoutId(): Int
-
-    /**
-     * 隐藏标题栏[ActionBar]
-     *
-     * 适配版本号[Build.VERSION_CODES.UPSIDE_DOWN_CAKE]时，需要主动设置主题背景
-     */
-    protected open fun hideTitleAndActionBar() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
-            supportActionBar?.hide()
-        }
-    }
 
     protected open fun getNavigationBarColor(): Int = R.color.transparent
 
@@ -65,82 +51,41 @@ abstract class BaseActivity : AppCompatActivity() {
 
     protected open fun getRootViewId(): Int = 0
 
-    /**
-     * 是否在 [onCreate] 里同步 inflate。
-     * 首页等需要 [androidx.asynclayoutinflater.view.AsyncLayoutInflater] 的页面返回 false，
-     * 自行在主线程 [setContentView] 后再走后续内容初始化。
-     */
-    protected open fun shouldInflateContentInOnCreate(): Boolean = true
-
-    protected open fun inflateContentView() {
-        setContentView(getLayoutId())
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        mContext = requireContext()
+        mRootView = inflater.inflate(getLayoutId(), container, false)
+        return mRootView
     }
 
-    /**
-     * 上层额外状态设置
-     *
-     * 适配版本号[Build.VERSION_CODES.UPSIDE_DOWN_CAKE]时，需要主动设置主题背景
-     */
-    protected open fun requestFeature() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            setTheme(R.style.Theme_HahaLearn_NoActionBar)
-        }
-    }
-
-    protected open fun extraConfig() {
-
-    }
-
-    /**
-     * [hideTitleAndActionBar] 之后、同步 inflate 之前。
-     * 首页开屏容器须在这里 [setContentView]，避免 extraConfig 过早加 content 导致 requestFeature 崩溃。
-     */
-    protected open fun onWindowReady() {
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        TimeMonitorManager.getInstance()
-            .getTimeMonitor(TimeMonitorConfig.TIME_MONITOR_ID_APPLICATION_START)
-            .recodingTimeTag("BaseActivity_requestFeature_before")
-        requestFeature()
-        TimeMonitorManager.getInstance()
-            .getTimeMonitor(TimeMonitorConfig.TIME_MONITOR_ID_APPLICATION_START)
-            .recodingTimeTag("BaseActivity_onCreate_before")
-        super.onCreate(savedInstanceState)
-        mContext = this
-        TimeMonitorManager.getInstance()
-            .getTimeMonitor(TimeMonitorConfig.TIME_MONITOR_ID_APPLICATION_START)
-            .recodingTimeTag("BaseActivity_extraConfig_before")
-        extraConfig()
-        TimeMonitorManager.getInstance()
-            .getTimeMonitor(TimeMonitorConfig.TIME_MONITOR_ID_APPLICATION_START)
-            .recodingTimeTag("BaseActivity_hideTitleAndActionBar_before")
-        hideTitleAndActionBar()
-        TimeMonitorManager.getInstance()
-            .getTimeMonitor(TimeMonitorConfig.TIME_MONITOR_ID_APPLICATION_START)
-            .recodingTimeTag("BaseActivity_onWindowReady_before")
-        onWindowReady()
-        TimeMonitorManager.getInstance()
-            .getTimeMonitor(TimeMonitorConfig.TIME_MONITOR_ID_APPLICATION_START)
-            .recodingTimeTag("BaseActivity_inflateContentView_before")
-        if (shouldInflateContentInOnCreate()) {
-            inflateContentView()
-        }
-        TimeMonitorManager.getInstance()
-            .getTimeMonitor(TimeMonitorConfig.TIME_MONITOR_ID_APPLICATION_START)
-            .recodingTimeTag("BaseActivity_setStatusBarColor_before")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setStatusBarColor(getStatusBarColor())
-        TimeMonitorManager.getInstance()
-            .getTimeMonitor(TimeMonitorConfig.TIME_MONITOR_ID_APPLICATION_START)
-            .recodingTimeTag("BaseActivity_setNavigationBarColor_before")
         setNavigationBarColor(getNavigationBarColor())
-        // insetsController / decorView 依赖 DecorView；异步 inflate 时须等 setContentView 后再处理
-        if (shouldInflateContentInOnCreate()) {
-            TimeMonitorManager.getInstance()
-                .getTimeMonitor(TimeMonitorConfig.TIME_MONITOR_ID_APPLICATION_START)
-                .recodingTimeTag("BaseActivity_handleNavigationVAndStatusVisibility_before")
-            handleNavigationVAndStatusVisibility()
-        }
+        handleNavigationVAndStatusVisibility()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart()")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume()")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause()")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop()")
     }
 
     /**
@@ -149,8 +94,8 @@ abstract class BaseActivity : AppCompatActivity() {
      * @param 背景颜色
      */
     private fun setNavigationBarColor(color: Int) {
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.navigationBarColor = resources.getColor(color)
+        requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        requireActivity().window.navigationBarColor = resources.getColor(color)
     }
 
     /**
@@ -159,15 +104,11 @@ abstract class BaseActivity : AppCompatActivity() {
      * @param color 背景颜色
      */
     private fun setStatusBarColor(color: Int) {
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-        window.statusBarColor = resources.getColor(color)
+        requireActivity().window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+        requireActivity().window.statusBarColor = resources.getColor(color)
     }
 
-    /**
-     * 须在 [setContentView] / DecorView 就绪后调用。
-     * 异步 inflate 场景请在 bind 完成后显式调用。
-     */
-    protected fun handleNavigationVAndStatusVisibility() {
+    private fun handleNavigationVAndStatusVisibility() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             handleAdvancedSystemNavigationAndStatus()
         } else {
@@ -177,13 +118,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     @RequiresApi(Build.VERSION_CODES.R)
     private fun handleAdvancedSystemNavigationAndStatus() {
-        // peekDecorView：Decor 未安装时为 null；直接读 insetsController 会在部分机型 NPE
-        if (window.peekDecorView() == null) {
-            handleNormalSystemNavigationAndStatus()
-            return
-        }
-        val insetsController = window.insetsController
-        if (insetsController == null) {
+        if (requireActivity().window.insetsController == null) {
             handleNormalSystemNavigationAndStatus()
             return
         }
@@ -191,7 +126,7 @@ abstract class BaseActivity : AppCompatActivity() {
         val isShowNavigation = isShowNavigation()
         val isShowStatus = isShowStatus()
         val isBlackStatusText = isBlackStatusText()
-        insetsController.apply {
+        requireActivity().window.insetsController!!.apply {
             // TODO 隐藏导航栏，上滑仍会会显示，后续再研究
             if (isShowNavigation) {
                 show(WindowInsetsCompat.Type.navigationBars())
@@ -206,9 +141,9 @@ abstract class BaseActivity : AppCompatActivity() {
 //                systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
                 val uiOption =
                     View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN.or(View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
-                window.decorView.systemUiVisibility = uiOption
+                requireActivity().window.decorView.systemUiVisibility = uiOption
                 Color.TRANSPARENT
-                window.statusBarColor = resources.getColor(getStatusBarColor())
+                requireActivity().window.statusBarColor = resources.getColor(getStatusBarColor())
                 addStatusBarView()
             }
             if (isBlackStatusText) {
@@ -245,12 +180,12 @@ abstract class BaseActivity : AppCompatActivity() {
             uiOption = uiOption.or(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
                 .or(View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
             Color.TRANSPARENT
-            window.statusBarColor = resources.getColor(getStatusBarColor())
+            requireActivity().window.statusBarColor = resources.getColor(getStatusBarColor())
             addStatusBarView()
             DOFLogUtil.d(TAG, "uiOption = $uiOption, isShowStatus = $isShowStatus")
         }
         DOFLogUtil.d(TAG, "uiOption = $uiOption")
-        window.decorView.systemUiVisibility = uiOption
+        requireActivity().window.decorView.systemUiVisibility = uiOption
     }
 
     /**
@@ -258,12 +193,12 @@ abstract class BaseActivity : AppCompatActivity() {
      */
     protected fun addStatusBarView() {
         if (getRootViewId() != 0) {
-            val rootView = findViewById<ViewGroup>(getRootViewId())
+            val rootView = requireActivity().findViewById<ViewGroup>(getRootViewId())
             DOFLogUtil.d(TAG, "rootView = $rootView")
             if (rootView != null) {
                 rootView.fitsSystemWindows = true
                 // 在原来的位置上添加一个状态栏
-                val statusBarView = createStatusBarView(this)
+                val statusBarView = createStatusBarView(requireActivity())
                 statusBarView.fitsSystemWindows = true
                 DOFLogUtil.d(
                     TAG,

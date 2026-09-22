@@ -8,8 +8,8 @@ import android.view.Gravity
 import android.view.View
 import android.view.Window
 import android.widget.ImageView
-import com.haha.base.BaseMvvmActivity
-import com.haha.base.BaseViewModel
+import com.haha.baseui.mvvm.BaseMvvmActivity
+import com.haha.baseui.mvvm.BaseViewModel
 import com.haha.hahalearn.R
 import com.haha.hahalearn.databinding.ActivitySceneFirstBinding
 

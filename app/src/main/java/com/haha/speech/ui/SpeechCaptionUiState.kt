@@ -1,7 +1,7 @@
 package com.haha.speech.ui
 
-import com.haha.mviFrame.base.IMviUiEffect
-import com.haha.mviFrame.base.IMviUiState
+import com.haha.baseui.mvi.IMviUiEffect
+import com.haha.baseui.mvi.IMviUiState
 
 enum class SpeechModelState {
     Missing,

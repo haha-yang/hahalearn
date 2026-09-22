@@ -7,7 +7,7 @@ import android.media.MediaPlayer
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.haha.base.BaseViewModel
+import com.haha.baseui.mvvm.BaseViewModel
 import com.haha.volume.bean.SongInfo
 import com.haha.volume.lrc.DefaultLrcBuilder
 import com.haha.volume.lrc.LrcRow

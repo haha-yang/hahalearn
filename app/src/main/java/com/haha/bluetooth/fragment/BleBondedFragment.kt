@@ -8,7 +8,7 @@ import android.util.Log
 import android.widget.TextView
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.haha.base.BaseMvvmFragment
+import com.haha.baseui.mvvm.BaseMvvmFragment
 import com.haha.blesdk.bean.BleScanResult
 import com.haha.blesdk.bean.toBleScanResult
 import com.haha.blesdk.constants.BleScanSettings

@@ -2,10 +2,10 @@ package com.haha.llm.ui
 
 import android.app.Application
 import android.content.Context
+import com.haha.baseui.mvi.BaseMVIViewModel
 import com.haha.llmsdk.chat.ChatSession
 import com.haha.llmsdk.config.LlmConfig
 import com.haha.llmsdk.config.LlmProvider
-import com.haha.mviFrame.base.BaseMVIViewModel
 
 class LlmChatViewModel(application: Application) :
     BaseMVIViewModel<LlmChatIntent, LlmChatUiState, LlmChatUiEffect>(

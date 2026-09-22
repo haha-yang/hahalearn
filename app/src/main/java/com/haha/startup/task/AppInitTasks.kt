@@ -2,7 +2,7 @@ package com.haha.startup.task
 
 import android.app.Application
 import com.bumptech.glide.Glide
-import com.haha.base.ActivityManager
+import com.haha.baseui.ActivityManager
 import com.haha.hahalearn.BuildConfig
 import com.haha.leakcanary.LeakCanaryInstaller
 import com.haha.log.DOFLogUtil

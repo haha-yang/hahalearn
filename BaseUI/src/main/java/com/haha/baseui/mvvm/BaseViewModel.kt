@@ -1,4 +1,4 @@
-package com.haha.base
+package com.haha.baseui.mvvm
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

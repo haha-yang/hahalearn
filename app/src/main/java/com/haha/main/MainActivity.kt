@@ -56,7 +56,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.GsonUtils
 import com.haha.animation.AnimationActivity
-import com.haha.base.BaseActivity
+import com.haha.baseui.BaseActivity
 import com.haha.bean.SubDeviceResultBean
 import com.haha.binder.TestService
 import com.haha.binding.BindingAdapterActivity

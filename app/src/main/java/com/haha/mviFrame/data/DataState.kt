@@ -1,7 +1,7 @@
 package com.haha.mviFrame.data
 
-import com.haha.mviFrame.base.IMviUiEffect
-import com.haha.mviFrame.base.IMviUiState
+import com.haha.baseui.mvi.IMviUiEffect
+import com.haha.baseui.mvi.IMviUiState
 import com.haha.mviFrame.main.User
 
 data class DataUiState(

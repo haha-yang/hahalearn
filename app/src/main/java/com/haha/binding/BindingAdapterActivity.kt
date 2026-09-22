@@ -1,7 +1,7 @@
 package com.haha.binding
 
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.haha.base.BaseMvvmActivity
+import com.haha.baseui.mvvm.BaseMvvmActivity
 import com.haha.hahalearn.R
 import com.haha.hahalearn.databinding.ActivityBindingAdapterBinding
 

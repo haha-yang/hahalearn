@@ -1,7 +1,7 @@
 package com.haha.mviFrame.data
 
 import android.app.Application
-import com.haha.mviFrame.base.BaseMVIViewModel
+import com.haha.baseui.mvi.BaseMVIViewModel
 import kotlinx.coroutines.delay
 
 class DataMVIViewModel(application: Application) :

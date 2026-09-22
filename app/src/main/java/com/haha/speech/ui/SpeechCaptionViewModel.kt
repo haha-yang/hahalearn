@@ -2,7 +2,7 @@ package com.haha.speech.ui
 
 import android.app.Application
 import android.net.Uri
-import com.haha.mviFrame.base.BaseMVIViewModel
+import com.haha.baseui.mvi.BaseMVIViewModel
 import com.haha.speech.caption.CaptionSession
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
