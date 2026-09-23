@@ -16,9 +16,9 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.haha.baseui.mvvm.BaseMvvmActivity
 import com.haha.baseui.mvvm.BaseViewModel
+import com.haha.contract.router.RoutePath
 import com.haha.hahalearn.R
 import com.haha.hahalearn.databinding.ActivityGpsBinding
-import com.haha.router.RoutePath
 import com.haha.servicerouterannotation.annotation.Route
 
 @Route(path = RoutePath.GPS, name = "Gps")

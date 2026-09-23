@@ -2,8 +2,8 @@ package com.haha.main.service
 
 import android.content.Context
 import android.os.Build
+import com.haha.contract.service.IUserService
 import com.haha.log.DOFLogUtil
-import com.haha.service.api.IUserService
 import com.haha.service.impl.service.ServiceLoader
 import com.haha.service.loader.ServiceLoaderHelper
 import java.io.File

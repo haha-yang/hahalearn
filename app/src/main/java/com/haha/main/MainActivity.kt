@@ -61,6 +61,7 @@ import com.haha.bean.SubDeviceResultBean
 import com.haha.binder.TestService
 import com.haha.binding.BindingAdapterActivity
 import com.haha.bluetooth.BluetoothActivity
+import com.haha.contract.router.RoutePath
 import com.haha.coroutineScope.CoroutineScopeActivity
 import com.haha.coroutineScope.EatGame
 import com.haha.dynamicTextView.DynamicTextViewActivity
@@ -83,7 +84,6 @@ import com.haha.main.timeMonitor.TimeMonitorManager
 import com.haha.mviFrame.main.MainMVIActivity
 import com.haha.network.NetworkActivity
 import com.haha.recyclerview.RecyclerViewActivity
-import com.haha.router.RoutePath
 import com.haha.scene.CustomSceneFirstActivity
 import com.haha.scene.SceneFirstActivity
 import com.haha.selector.SelectorActivity

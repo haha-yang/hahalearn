@@ -3,9 +3,9 @@ package com.haha.llm.ui
 import android.view.View
 import android.widget.Toast
 import com.haha.baseui.mvi.BaseMVIActivity
+import com.haha.contract.router.RoutePath
 import com.haha.hahalearn.R
 import com.haha.hahalearn.databinding.ActivityLlmChatBinding
-import com.haha.router.RoutePath
 import com.haha.servicerouterannotation.annotation.Route
 
 @Route(path = RoutePath.LLM_CHAT, name = "LlmChat")

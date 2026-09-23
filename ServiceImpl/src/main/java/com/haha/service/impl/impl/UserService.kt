@@ -1,8 +1,8 @@
 package com.haha.service.impl.impl
 
 import android.util.Log
+import com.haha.contract.service.IUserService
 import com.haha.service.annotation.IServiceLoader
-import com.haha.service.api.IUserService
 
 
 /**

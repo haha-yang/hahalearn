@@ -6,9 +6,9 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.haha.baseui.mvi.BaseMVIActivity
+import com.haha.contract.router.RoutePath
 import com.haha.hahalearn.R
 import com.haha.hahalearn.databinding.ActivitySpeechCaptionBinding
-import com.haha.router.RoutePath
 import com.haha.servicerouterannotation.annotation.Route
 
 @Route(path = RoutePath.SPEECH_CAPTION, name = "SpeechCaption")

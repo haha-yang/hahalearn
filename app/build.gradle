@@ -227,7 +227,7 @@ dependencies {
     implementation project(':BaseUI')
     implementation project(':LlmSdk')
     implementation project(':speech-asr')
-    implementation project(':ServiceApi')
+    implementation project(':lib-contract')
     implementation project(':ServiceRuntime')
     runtimeOnly project(':ServiceImpl')
     implementation project(':JdkSpiApi')

@@ -5,6 +5,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.util.Log
+import com.haha.contract.flutter.FlutterContract
 import com.haha.flutter.FlutterChannel.Companion.MESSAGE_CALCULATE_SUM
 import com.haha.flutter.FlutterChannel.Companion.MESSAGE_ERROR_EXCEPTION
 import com.haha.flutter.FlutterChannel.Companion.MESSAGE_GET_FLUTTER_DATA
@@ -32,8 +33,8 @@ class FlutterChannel(context: Context) {
 
     companion object {
         private val TAG = "FlutterChannel"
-        const val FLUTTER_ENGINE_ID = "haha_flutter_engine"
-        const val CHANNEL_NAME = "com.haha.flutter_module/channel"
+        const val FLUTTER_ENGINE_ID = FlutterContract.FLUTTER_ENGINE_ID
+        const val CHANNEL_NAME = FlutterContract.CHANNEL_NAME
 
         const val MESSAGE_CALCULATE_SUM = 101
         const val MESSAGE_GET_FLUTTER_DATA = 102

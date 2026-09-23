@@ -1,4 +1,4 @@
-package com.haha.service.api
+package com.haha.contract.service
 
 /**
  *

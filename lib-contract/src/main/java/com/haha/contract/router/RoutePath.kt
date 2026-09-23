@@ -1,4 +1,4 @@
-package com.haha.router
+package com.haha.contract.router
 
 /**
  * 页面路由 path，与 @Route 保持一致。
