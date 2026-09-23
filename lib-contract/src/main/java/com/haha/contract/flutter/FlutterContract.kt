@@ -2,6 +2,7 @@ package com.haha.contract.flutter
 
 /**
  * Flutter 与原生共用的通道约定。Engine 创建与 MethodChannel 调用留在 app。
+ * Dart 侧同名常量：flutterStudy/lib/contract/flutter_contract.dart
  */
 object FlutterContract {
     const val FLUTTER_ENGINE_ID = "haha_flutter_engine"

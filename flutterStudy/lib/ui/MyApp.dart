@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_study/contract/flutter_contract.dart';
 import 'package:flutter_study/ui/DemoItem.dart';
 
 class MyApp extends StatelessWidget {
@@ -19,7 +20,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  static const platform = MethodChannel('com.haha.flutter_module/channel');
+  static const platform = MethodChannel(FlutterContract.channelName);
 
   // 提供给 Android 调用的方法
   Future<String> getFlutterData(String input) async {
