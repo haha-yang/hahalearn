@@ -1,0 +1,122 @@
+# HahaLearn CI/CD
+# CI：干净环境跑单测 + 编 debug APK
+# CD：上传 APK Artifact；打 v* tag 时挂到 GitHub Release
+#
+# 本仓 settings.gradle 会 evaluate flutterStudy/.android/include_flutter.groovy，
+# 该目录由 `flutter pub get` 生成，因此任何 Gradle 任务都要先装 Flutter。
+
+name: Android CI/CD
+
+on:
+  push:
+    branches: [ develop, develop-router, main ]
+    tags: [ "v*" ]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  JAVA_VERSION: "17"
+  NDK_VERSION: "28.2.13676358"
+  CMAKE_VERSION: "3.22.1"
+  BUILD_TOOLS_VERSION: "35.0.0"
+  COMPILE_SDK_VERSION: "36"
+  ANDROID_HOME: /usr/local/lib/android/sdk
+  ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
+
+jobs:
+  android:
+    name: Test and assemble debug
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: gradle
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Generate Flutter module (.android + local.properties)
+        working-directory: flutterStudy
+        run: |
+          flutter --version
+          flutter config --no-analytics
+          flutter pub get
+
+      - name: Cap Gradle heap for the runner
+        run: |
+          sed -i 's/-Xmx8196m/-Xmx6g -XX:MaxMetaspaceSize=1g/' gradle.properties
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Cache NDK
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.ANDROID_HOME }}/ndk/${{ env.NDK_VERSION }}
+          key: ndk-${{ runner.os }}-${{ env.NDK_VERSION }}
+
+      - name: Install platforms, NDK and CMake
+        run: |
+          yes | sdkmanager --licenses >/dev/null || true
+          sdkmanager \
+            "platforms;android-${COMPILE_SDK_VERSION}" \
+            "build-tools;${BUILD_TOOLS_VERSION}" \
+            "cmake;${CMAKE_VERSION}"
+          if [ ! -d "${ANDROID_HOME}/ndk/${NDK_VERSION}" ]; then
+            sdkmanager "ndk;${NDK_VERSION}"
+          fi
+          echo "ANDROID_NDK_HOME=${ANDROID_HOME}/ndk/${NDK_VERSION}" >> "$GITHUB_ENV"
+
+      - name: Grant Gradle wrapper executable
+        run: chmod +x gradlew
+
+      - name: Unit tests
+        run: ./gradlew :LlmSdk:testDebugUnitTest --no-daemon --stacktrace
+
+      - name: Assemble debug APK
+        run: ./gradlew :app:assembleDebug --no-daemon --stacktrace
+
+      - name: Upload debug APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: hahalearn-debug-${{ github.sha }}
+          path: app/build/outputs/apk/debug/*.apk
+          if-no-files-found: error
+          retention-days: 14
+
+  release:
+    name: GitHub Release
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: android
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download debug APK
+        uses: actions/download-artifact@v4
+        with:
+          name: hahalearn-debug-${{ github.sha }}
+          path: dist
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.apk
+          generate_release_notes: true
+          fail_on_unmatched_files: true
