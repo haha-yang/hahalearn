@@ -48,9 +48,9 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          # 与本机 / pubspec sdk: ^3.10.4 对齐；最新 stable 已要求 Gradle 8.14+
+          # 3.40.0 不是正式 stable。3.38.5 起带 Dart 3.10.4，且不强制 Gradle 8.14
           channel: stable
-          flutter-version: "3.40.0"
+          flutter-version: "3.38.5"
           cache: true
 
       - name: Generate Flutter module (.android + local.properties)
