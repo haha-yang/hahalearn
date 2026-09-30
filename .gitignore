@@ -34,3 +34,8 @@ node_modules
 
 # speech-asr 离线模型体积大，运行时下载，不要进仓库
 speech-asr/src/main/assets/speech-asr/
+
+# 本地 release 签名，只用于安装，不要进仓库
+keystore.properties
+*.jks
+*.keystore

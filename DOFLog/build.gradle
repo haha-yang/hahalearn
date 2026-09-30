@@ -2,6 +2,13 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-android'
+    id 'maven-publish'
+}
+
+ext {
+    PUBLISH_GROUP = 'com.haha'
+    PUBLISH_ARTIFACT = 'doflog'
+    PUBLISH_VERSION = '1.0.0'
 }
 
 android {
@@ -16,6 +23,17 @@ android {
         consumerProguardFiles "consumer-rules.pro"
     }
 
+    publishing {
+        multipleVariants("release") {
+            includeBuildTypeValues("release")
+            withSourcesJar()
+        }
+        multipleVariants("debug") {
+            includeBuildTypeValues("debug")
+            withSourcesJar()
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -28,6 +46,47 @@ android {
     }
     kotlinOptions {
         jvmTarget = rootProject.ext.jvmTarget_version
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = PUBLISH_GROUP
+                artifactId = PUBLISH_ARTIFACT
+                version = PUBLISH_VERSION
+                pom {
+                    name = 'DOFLog'
+                    description = 'HahaLearn unified Android logger (release)'
+                    url = 'https://github.com/haha-yang/hahalearn'
+                }
+            }
+            debug(MavenPublication) {
+                from components.debug
+                groupId = PUBLISH_GROUP
+                artifactId = PUBLISH_ARTIFACT
+                // SNAPSHOT 可反复覆盖；正式版 1.0.0 不可覆盖
+                version = "${PUBLISH_VERSION}-SNAPSHOT"
+                pom {
+                    name = 'DOFLog'
+                    description = 'HahaLearn unified Android logger (debug / maven-snapshots)'
+                    url = 'https://github.com/haha-yang/hahalearn'
+                }
+            }
+        }
+        repositories {
+            mavenLocal()
+            maven {
+                name = 'GitHubPackages'
+                url = uri(rootProject.ext.gprMavenUrl)
+                credentials {
+                    username = rootProject.ext.gprUser
+                    password = rootProject.ext.gprKey
+                }
+            }
+        }
     }
 }
 

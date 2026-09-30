@@ -6,6 +6,12 @@ plugins {
     id 'com.haha.servicerouter.register'
 }
 
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+def keystoreProperties = new Properties()
+if (keystorePropertiesFile.exists()) {
+    keystorePropertiesFile.withInputStream { keystoreProperties.load(it) }
+}
+
 android {
     namespace 'com.haha.hahalearn'
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -21,6 +27,10 @@ android {
 
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
+        // minify 关闭时，依赖带进来的 baseline profile 校验和与当前 dex 对不上。
+        // 系统安装会在 dexopt 阶段失败：INSTALL_BASELINE_PROFILE_FAILED。
+        exclude 'assets/dexopt/baseline.prof'
+        exclude 'assets/dexopt/baseline.profm'
         pickFirst 'lib/arm64-v8a/libc++_shared.so'
         pickFirst 'lib/arm64-v8a/libonnxruntime.so'
     }
@@ -70,10 +80,38 @@ android {
 //        compose = true
     }
 
-    buildTypes {
+    signingConfigs {
         release {
+            if (keystorePropertiesFile.exists()) {
+                storeFile rootProject.file(keystoreProperties.getProperty("storeFile"))
+                storePassword keystoreProperties.getProperty("storePassword")
+                keyAlias keystoreProperties.getProperty("keyAlias")
+                keyPassword keystoreProperties.getProperty("keyPassword")
+            }
+        }
+    }
+
+    buildTypes {
+        debug {
+            // 默认可调试。Flutter 看到 debuggable=true 后打 JIT / kernel_blob。
+        }
+        release {
+            // 必须保持不可调试，Flutter 才会走 AOT release，而不是再打一份 debug 引擎。
+            debuggable false
+            // keystore.properties 存在时用本地 release 证书，APK 才能安装。
+            // 没有该文件时退回 debug 证书，避免别人拉下工程后 release 直接编不过。
+            signingConfig keystorePropertiesFile.exists() ? signingConfigs.release : signingConfigs.debug
+            // 工程里反射、路由、Gson 较多，默认不裁剪，避免 release 一跑就崩。
             minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // 未开 R8 时，AndroidX 等依赖的 baseline profile 校验和与当前 dex 对不上，
+            // 安装会失败：INSTALL_BASELINE_PROFILE_FAILED。
+            optimization {
+                baselineProfile {
+                    ignoreFromAllExternalDependencies = true
+                }
+            }
         }
     }
 //    composeOptions {
@@ -207,8 +245,9 @@ dependencies {
     // 内存泄漏工具 leakcanary（仅 debug；安装逻辑在 src/debug LeakCanaryInstaller）
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
 
-    // Flutter 依赖
-    implementation "io.flutter:flutter_embedding_debug:1.0.0"
+    // Flutter 引擎按变体拆开。写死 debug 时，release 包仍会打进 kernel_blob 和调试版 libflutter.so。
+    debugImplementation "io.flutter:flutter_embedding_debug:1.0.0"
+    releaseImplementation "io.flutter:flutter_embedding_release:1.0.0"
 
     testImplementation 'org.ow2.asm:asm:7.1'
     testImplementation 'org.ow2.asm:asm-commons:7.1'

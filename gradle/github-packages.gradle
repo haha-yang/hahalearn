@@ -1,0 +1,144 @@
+// 用 GitHub Packages 代替 Nexus / Artifactory：同一 URL 托管 release 与 SNAPSHOT。
+// 发布后包出现在 https://github.com/<owner>/<repo>/packages
+// 版本清单：https://maven.pkg.github.com/<owner>/<repo>/<group>/<artifact>/maven-metadata.xml
+
+ext.gprUser = findProperty('gpr.user') ?: System.getenv('GITHUB_ACTOR') ?: ''
+ext.gprKey = findProperty('gpr.key') ?: System.getenv('GITHUB_TOKEN') ?: ''
+ext.gprRepo = findProperty('gpr.repo') ?: 'haha-yang/hahalearn'
+ext.gprMavenUrl = "https://maven.pkg.github.com/${ext.gprRepo}"
+ext.gprPackagesPage = "https://github.com/${ext.gprRepo}/packages"
+ext.gprOwner = ext.gprRepo.toString().split('/')[0]
+
+// 本仓会发到 GitHub Packages 的坐标；后续模块在此追加
+ext.gprKnownCoordinates = [
+        [group: 'com.haha', artifact: 'doflog'],
+]
+
+def gprHttpGet(String url, Map<String, String> headers) {
+    def conn = (HttpURLConnection) new URL(url).openConnection()
+    conn.requestMethod = 'GET'
+    conn.connectTimeout = 15000
+    conn.readTimeout = 20000
+    conn.instanceFollowRedirects = true
+    headers.each { k, v -> conn.setRequestProperty(k, v) }
+    def code = conn.responseCode
+    def stream = code >= 400 ? conn.errorStream : conn.inputStream
+    def body = stream?.getText('UTF-8') ?: ''
+    conn.disconnect()
+    return [code: code, body: body]
+}
+
+def gprBasicAuthHeader() {
+    def token = "${gprUser}:${gprKey}".bytes.encodeBase64().toString()
+    return "Basic ${token}"
+}
+
+def gprMavenMetadataUrl(String groupId, String artifactId) {
+    return "${gprMavenUrl}/${groupId.replace('.', '/')}/${artifactId}/maven-metadata.xml"
+}
+
+def gprParseMetadata(String xmlText) {
+    def xml = new XmlSlurper().parseText(xmlText)
+    def versions = xml.versioning.versions.version*.text().findAll { it }
+    return [
+            group   : xml.groupId.text(),
+            artifact: xml.artifactId.text(),
+            latest  : xml.versioning.latest.text(),
+            release : xml.versioning.release.text(),
+            versions: versions,
+            updated : xml.versioning.lastUpdated.text(),
+    ]
+}
+
+def gprDiscoverCoordinates() {
+    def found = [] as LinkedHashSet
+    gprKnownCoordinates.each { found << "${it.group}:${it.artifact}" }
+
+    if (gprUser && gprKey) {
+        def apiUrl = "https://api.github.com/users/${gprOwner}/packages?package_type=maven&per_page=100"
+        def resp = gprHttpGet(apiUrl, [
+                'Authorization': "Bearer ${gprKey}",
+                'Accept'       : 'application/vnd.github+json',
+                'User-Agent'   : 'hahalearn-gradle',
+        ])
+        if (resp.code == 200) {
+            def pkgs = new groovy.json.JsonSlurper().parseText(resp.body)
+            pkgs.each { pkg ->
+                def name = pkg.name?.toString()
+                if (!name) {
+                    return
+                }
+                def repoName = pkg.repository?.full_name?.toString()
+                if (repoName && repoName != gprRepo) {
+                    return
+                }
+                def parts = name.split('\\.')
+                if (parts.length < 2) {
+                    return
+                }
+                def artifact = parts[-1]
+                def group = parts[0..-2].join('.')
+                found << "${group}:${artifact}"
+            }
+        } else {
+            logger.lifecycle("GitHub Packages API ${resp.code}，改用本仓已知坐标。需 read:packages")
+        }
+    }
+
+    return found.collect { coord ->
+        def idx = coord.lastIndexOf(':')
+        [group: coord.substring(0, idx), artifact: coord.substring(idx + 1)]
+    }
+}
+
+tasks.register('listGithubPackages') {
+    group = 'publishing'
+    description = '读取 GitHub Packages 上各包的 maven-metadata.xml 并打印版本'
+
+    doLast {
+        if (!gprUser || !gprKey) {
+            throw new GradleException(
+                    "未配置 GitHub Packages 凭证。请在 ~/.gradle/gradle.properties 写入 gpr.user / gpr.key（不要提交）"
+            )
+        }
+
+        logger.lifecycle("Packages 页: ${gprMavenUrl}")
+        logger.lifecycle("网页目录: ${gprPackagesPage}")
+        logger.lifecycle("")
+
+        def coords = gprDiscoverCoordinates()
+        def printed = 0
+        coords.each { c ->
+            def metaUrl = gprMavenMetadataUrl(c.group, c.artifact)
+            def resp = gprHttpGet(metaUrl, [
+                    'Authorization': gprBasicAuthHeader(),
+                    'Accept'       : 'application/xml',
+                    'User-Agent'   : 'hahalearn-gradle',
+            ])
+            logger.lifecycle("—— ${c.group}:${c.artifact}")
+            logger.lifecycle("   ${metaUrl}")
+            if (resp.code == 200) {
+                def meta = gprParseMetadata(resp.body)
+                logger.lifecycle("   latest : ${meta.latest}")
+                logger.lifecycle("   release: ${meta.release}")
+                logger.lifecycle("   versions: ${meta.versions.join(', ')}")
+                logger.lifecycle("   updated : ${meta.updated}")
+                printed++
+            } else {
+                logger.lifecycle("   尚未发布或无权读取 (HTTP ${resp.code})")
+            }
+            logger.lifecycle("")
+        }
+        if (printed == 0) {
+            logger.lifecycle("仓库里还没有 Maven 包。先执行: ./gradlew publishToGithubPackages")
+            logger.lifecycle("成功后打开: ${gprPackagesPage}")
+        }
+    }
+}
+
+tasks.register('publishToGithubPackages') {
+    group = 'publishing'
+    description = '发布本仓模块到 GitHub Packages，并列出已有版本'
+    dependsOn ':DOFLog:publish'
+    finalizedBy 'listGithubPackages'
+}
