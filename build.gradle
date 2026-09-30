@@ -51,9 +51,22 @@ buildscript {
     }
 }
 
+apply from: "$rootDir/gradle/github-packages.gradle"
+
 allprojects {
     repositories {
         mavenLocal()
+        // GitHub Packages 充当私服（等同 Nexus maven-public）
+        if (rootProject.ext.gprUser && rootProject.ext.gprKey) {
+            maven {
+                name = 'GitHubPackages'
+                url = uri(rootProject.ext.gprMavenUrl)
+                credentials {
+                    username = rootProject.ext.gprUser
+                    password = rootProject.ext.gprKey
+                }
+            }
+        }
 //        maven { url "https://maven.google.com" }
         // 配置Maven仓库地址，以提高依赖下载速度
         // 添加公共仓库的阿里云镜像，这个仓库包含了大量开源项目的发布版本
